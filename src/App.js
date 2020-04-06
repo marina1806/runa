@@ -1,86 +1,69 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
+import Checkbox from "./Checkbox";
+import './index.css';
 
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  title: {
-    color: 'black',
-    fontWeight: 'bold',
-  },
-  formControl: {
-    margin: theme.spacing(3),
-  },
-}));
-
-export default function Checkboxes() {
-  const classes = useStyles();
-  const [checked, setChecked] = React.useState(true);
-  const [focused, setFocused] = React.useState(false);
-
-  const handleChange = (event) => {
-    setChecked(event.target.checked);
+export default class App extends React.Component {
+  state = {
+    checked: false,
+    disabled: true,
+    hover: false ,
+    focused: false,
+    pressed: false 
   };
 
-  return (
-    <div className={classes.root}>
-     <FormControl component="fieldset" className={classes.formControl}>
-      <FormLabel className={classes.title} component="legend">Uncheked</FormLabel>
-        <FormGroup>
-          <FormControlLabel
-            control={<Checkbox disabled inputProps={{ 'aria-label': 'disabled checkbox' }} onChange={handleChange}  />}
-            label="Disabled"
-          />
-          <FormControlLabel
-            control={<Checkbox color="default" inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} onChange={handleChange} />}
-            label="Enabled"
-          />
-          <FormControlLabel
-            control={<Checkbox color="default" focused={focused} inputProps={{ 'aria-label': 'checkbox with focus' }} onChange={handleChange}  />}
-            label="Focused"
-          />
-          <FormControlLabel
-            control={<Checkbox color="default" inputProps={{ 'aria-label': 'checkbox hover' }} onChange={handleChange} />}
-            label="Hover"
-          />
-          <FormControlLabel
-            control={<Checkbox color="primary" inputProps={{ 'aria-label': 'checkbox pressed' }} onChange={handleChange}  />}
-            label="Pressed"
-          />
-        </FormGroup>
-        </FormControl>
-        <FormControl  component="fieldset" className={classes.formControl}>
-        <FormLabel className={classes.title} component="legend">Cheked</FormLabel>
-        <FormGroup>
-          <FormControlLabel
-            control={<Checkbox disabled checked inputProps={{ 'aria-label': 'disabled checked checkbox' }} onChange={handleChange} />}
-            label="Disabled"
-          />
-          <FormControlLabel
-            control={<Checkbox checked color="primary"inputProps={{ 'aria-label': 'uncontrolled-checkbox' }}  onChange={handleChange} />}
-            label="Enabled"
-          />
-          <FormControlLabel
-            control={<Checkbox checked color="primary" inputProps={{ 'aria-label': 'checkbox with focus' }} inputProps={{ 'aria-label': 'checkbox pressed' }}onChange={handleChange}  />}
-            label="Focused"
-          />
-           <FormControlLabel
-            control={<Checkbox checked color="primary" inputProps={{ 'aria-label': 'checkbox hover' }} onChange={handleChange} />}
-            label="Hover"
-          />
-          <FormControlLabel
-            control={<Checkbox checked color="primary" inputProps={{ 'aria-label': 'checkbox pressed' }} onChange={handleChange}  />}
-            label="Pressed"
-          />
-        </FormGroup>
-      </FormControl>
-    </div>
-  );
+  handleChange = () => {
+    this.setState({
+      checked: !this.state.checked,
+    });
+  };
+
+  toggleHover = () => {
+    console.log("hello");
+    this.setState({
+      hover: !this.state.hover,
+    });
+  };
+  onFocusHandler = () => {
+    console.log("hi");
+    this.setState({
+      focused: !this.state.focused,
+    });
+  };
+  onClickHandler = () => {
+    console.log("click");
+    this.setState({
+      pressed: !this.state.pressed,
+    });
+  };
+
+
+  render() {
+    const { disabled, checked,} = this.state;
+
+    let checkStyle;
+      if (this.state.hover) {
+        checkStyle = {backgroundColor: 'blue', cursor: 'pointer'}
+      } else if (this.state.focused) {
+        checkStyle = {backgroundColor: 'blue',cursor: 'pointer'}
+      } else {
+        checkStyle ={ backgroundColor: 'blue'}
+      }
+
+    return (
+      <div className="App">
+        <Checkbox
+         css={checkStyle}
+         checked={checked}
+         disabled={disabled}
+         onChange={this.handleChange}
+         onMouseEnter={this.toggleHover} 
+         onMouseLeave={this.toggleHover}
+         onFocus={this.onFocusHandler}
+         onClick={this.onClickHandler}
+         />
+      </div>
+    );
+  }
 }
+
